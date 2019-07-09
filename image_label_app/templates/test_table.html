@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+    <link href="https://nightly.datatables.net/css/jquery.dataTables.css" rel="stylesheet" type="text/css" />
+    <script src="https://nightly.datatables.net/js/jquery.dataTables.js"></script>
+
+    <style>
+
+        .archive-style {
+            font-size: 11pt;
+            font-family: Arial;
+            border-collapse: collapse;
+            border: 1px solid silver;
+
+        }
+
+        /* Styling for the rows and cells  */
+        .archive-style td, th {
+            padding: 5px;
+        }
+
+        /* Styling for the column headers */
+        .archive-style th {
+            font-family: Georgia;
+        }
+
+        /* Styles the alternating rows */
+        .archive-style tr:nth-child(even) {
+            background: #E0E0E0;
+        }
+
+        .archive-style tr:hover {
+            background: silver;
+            cursor: pointer;
+        }
+
+    </style>
+
+
+</head>
+<body>
+    <div class="container">
+
+<div class="page-header">
+  <h2>Administrative Report</h2>
+</div>
+
+
+<table id="example" class="archive-style" style="width:65%">
+    <thead>
+        <tr style="test-align: center">
+            <th>Username</th>
+            <th>Count</th>
+        </tr>
+    </thead>
+</table>
+
+        <script>
+        function setupData() {
+            $(document).ready(function() {
+                $('#example').DataTable({
+                    "ajax": {
+                        // "url": "static/objects2.txt", // This works for the static file
+                        "url": "/getting_data", // This now works too thanks to @kthorngren
+                        "dataType": "json",
+                        "dataSrc": "data",
+                        "contentType":"application/json"
+                    },
+                    "columns": [
+                        {"data": "username"},
+                        {"data": "count"}
+                    ]
+                });
+            });
+        }
+        $( window ).on( "load", setupData );
+        </script>
+
+    </div>
+  </body>
+</html>

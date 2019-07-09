@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Log in Page</title>
+
+    <style>
+
+        #ust-pswd-input {
+
+        }
+
+        #login-button {
+
+        }
+
+    </style>
+
+</head>
+<body>
+
+    <form action="{{ '/logging-in' }}" method="POST">
+
+        <div class="usr-pswd" data-validate="Please enter your username">
+            <input class="usr-pswd-input" type="text" name="username" placeholder="Username" required>
+        </div>
+
+        <div class="usr-pswd" data-validate="Please enter your password">
+            <input class="usr-pswd-input" type="password" name="password" placeholder="Password" required>
+        </div>
+
+        <div class="login-button">
+            <button>
+                Login
+            </button>
+        </div>
+    </form>
+
+</body>
+</html>

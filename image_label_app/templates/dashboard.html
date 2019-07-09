@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+
+    <style>
+
+        img {
+            max-width:100%;
+            max-height:100%;
+        }
+
+        .container {
+            height: 50vh;
+            width: 50vw;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!--<img src="{{ url_for('static', filename=image) }}" name="the_image">-->
+        <img src="{{ image }}" name="the_image">
+    </div>
+
+    <form action="{{ '/logo-submit' }}" method="POST">
+        <div>
+            <button>
+                Logo
+            </button>
+            <input class="invisible" type="hidden" name="logo_path" value="{{ image }}">
+        </div>
+    </form>
+
+    <form action="{{ '/no-logo-submit' }}" method="POST">
+        <div>
+            <button>
+                No logo
+            </button>
+            <input class="invisible" type="hidden" name="nlogo_path" value="{{ image }}">
+        </div>
+    </form>
+
+</body>
+</html>
