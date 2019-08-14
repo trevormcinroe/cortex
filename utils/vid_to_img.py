@@ -22,110 +22,6 @@ import random
 file = r'\\10.176.176.135\Quadratic\Decision Sciences\MLB\vidz\london_game\2019-08-12 16-01-28.mp4'
 
 
-def vid_to_img(video, folder_name):
-    """"""
-
-    assert os.path.isfile(video), 'given video cannot be found'
-
-    # Creating a nested folder to place the images into
-    if not os.path.isdir(folder_name):
-
-        os.mkdir(folder_name)
-
-    # Does not read it into memory, thank goodness...
-    # What does this actually do?
-    vid = cv2.VideoCapture(video)
-
-    frame_cnt = 0
-    # break_condition = True
-    while frame_cnt < 100:
-
-        inner_count = 0
-
-        while inner_count <= 80:
-            # Reading a single frame
-            ret, frame = vid.read()
-
-            if ret:
-
-                inner_count += 1
-
-            else:
-
-                break
-
-        cv2.imwrite(os.path.join(folder_name, str(frame_cnt) + 'london.png'),
-                    frame)
-
-        frame_cnt += 1
-
-
-# Testing out a different implementation
-def vid_to_img2(video, folder_name, est_vid_len, n, game):
-    """"""
-
-    assert os.path.isfile(video), 'given video cannot be found'
-
-    # Creating a nested folder to place the images into
-    if not os.path.isdir(folder_name):
-        os.mkdir(folder_name)
-
-    # Does not read it into memory, thank goodness...
-    # What does this actually do?
-    vid = cv2.VideoCapture(video)
-
-    fps = vid.get(cv2.CAP_PROP_FPS)
-
-    # est_vid_length is in minutes
-    est_tot_frames = fps * est_vid_len * 60
-
-    desired_frames = n * np.arange(est_tot_frames)
-
-
-    for i in desired_frames:
-
-        vid.set(1, i - 1)
-
-        success, img = vid.read(1)
-
-        cv2.imwrite(os.path.join(folder_name, str(i) + game + '.png'), img)
-
-    vid.release()
-
-
-def vid_to_img3(video, folder_name, n, game):
-    """"""
-
-    assert os.path.isfile(video), 'given video cannot be found'
-
-    # Creating a nested folder to place the images into
-    if not os.path.isdir(folder_name):
-        os.mkdir(folder_name)
-
-    # Does not read it into memory, thank goodness...
-    # What does this actually do?
-    vid = cv2.VideoCapture(video)
-
-    count = 0
-
-    while vid.isOpened():
-
-        success, img = vid.read()
-
-        if success:
-
-            cv2.imwrite(os.path.join(folder_name, str(count) + game + '.png'), img)
-
-            count += n
-
-            vid.set(1, count)
-
-        else:
-
-            vid.release()
-
-            break
-
 class Vid_To_Img:
     """This class is meant to handle the parallelization of video-to-image parsing
     Due to the nature of the size of video data (read: B I G), running parallel processes is a
@@ -146,7 +42,6 @@ class Vid_To_Img:
                  save_folder):
 
         self.video_file = video_file
-        self.video = None
         self.video_len = None
         self.n_parallel = n_parallel
         self.nth_frame = nth_frame
@@ -265,17 +160,7 @@ class Vid_To_Img:
 
 
 
-# start = time.time()
-# vid_to_img3(video=file,
-#            folder_name=r'\\10.176.176.135\Quadratic\Decision Sciences\MLB\vidz\london_game\imgs',
-#             n=10,
-#             game='london')
-#
-# print(f'This operation took {time.time() - start} seconds to parse {len(os.listdir("//10.176.176.135/Quadratic/Decision Sciences/MLB/vidz/london_game/imgs"))} images')
-
-
 if __name__ == '__main__':
-    start = time.time()
     a = Vid_To_Img(video_file=file,
                    n_parallel=12,
                    nth_frame=10,
