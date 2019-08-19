@@ -12,6 +12,7 @@ import cv2
 import os
 import multiprocessing
 import random
+import argparse
 ### === TESTING OUT CV2 === ###
 
 # Length = 00:12:50
@@ -57,7 +58,7 @@ class Vid_To_Img:
         # Creating the
         if os.path.isdir(self.save_folder):
 
-            answer = input(f'Given save_folder exists. Are you sure you want to write images here? (y/n)')
+            answer = input('Given save_folder exists. Are you sure you want to write images here? (y/n)')
 
             if answer == 'n':
 
@@ -85,6 +86,9 @@ class Vid_To_Img:
         # First, we grab the length of the video...
         video.set(cv2.CAP_PROP_POS_AVI_RATIO, 1)
         self.video_len = video.get(cv2.CAP_PROP_POS_MSEC) / 1000 # THIS IS THE LEN IN SECONDS
+
+        # Multiplying the number of seconds by the Frames Per Second of the video
+        self.video_len = self.video_len * video.get(cv2.CAP_PROP_FPS)
 
         beginning = 0
         for i in range(self.n_parallel):
@@ -161,14 +165,25 @@ class Vid_To_Img:
 
 
 if __name__ == '__main__':
-    a = Vid_To_Img(video_file=file,
-                   n_parallel=12,
-                   nth_frame=10,
-                   save_folder=r'\\10.176.176.135\Quadratic\Decision Sciences\MLB\vidz\london_game\imgs')
 
+    # CLI Utils
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument('-file', help='the video file to be parsed into frames')
+    parser.add_argument('-n', help='the number of parallel processes to spawn',  type=int)
+    parser.add_argument('-nth', help='when skipping frames, take the nth frame', type=int)
+    parser.add_argument('-save', help='the folder in which to save the parsed frames')
+
+    args = parser.parse_args()
+
+    # After parsing out the args, we can init the class...
+    a = Vid_To_Img(video_file=args.file,
+                   n_parallel=args.n,
+                   nth_frame=args.nth,
+                   save_folder=args.save)
+
+    # Running the initalization of the class
     a.initalize()
 
+    # gogogo
     a.parallel_parse()
-
-
-    # print(f'This action took {time.time() - start} seconds!')
